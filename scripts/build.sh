@@ -3,7 +3,7 @@
 # Configurazione
 OPENAI_API_KEY="${OPENAI_API_KEY}"
 TOPICS_FILE="topics.txt"
-DOCS_DIR="docs/posts"
+DOCS_DIR="docs/_posts"
 TEMP_FILE="/tmp/openai_response.json"
 PROCESSED_TOPICS="processed_topics.txt"
 
@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 
 # Funzione per logging
 log() {
-    echo -e "${GREEN}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} $1"
+    echo -e "${GREEN}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} $1" >&2
 }
 
 error() {
@@ -263,6 +263,7 @@ main() {
     if ! jq empty "$TEMP_FILE" 2>/dev/null; then
         error "Risposta API non è JSON valido"
         error "Risposta: $api_response"
+        cat $TEMP_FILE
         exit 1
     fi
 
